@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `bd_tutorias`.`Alumno` (
   `alumno_id` INT NOT NULL,
   `alumno_nombre` VARCHAR(50) NOT NULL,
   `alumno_apellidos` VARCHAR(150) NOT NULL,
-  `carrera_id` INT NOT NULL,
+  `plan_id` INT NOT NULL,
   `alumno_semestre` INT NOT NULL,
   `alumno_grupo` ENUM('A', 'B', 'C') NOT NULL,
   `alumno_grupo_numero` TINYINT NOT NULL,
@@ -348,16 +348,11 @@ END$$
 
 CREATE TRIGGER `cascada_actualizar_padre_carrera` AFTER UPDATE ON `Carrera` 
 FOR EACH ROW BEGIN
-    UPDATE Alumno SET Alumno.carrera_id = NEW.carrera_id WHERE Alumno.carrera_id = OLD.carrera_id;
     UPDATE Plan_Estudio SET Plan_Estudio.carrera_id = NEW.carrera_id WHERE Plan_Estudio.carrera_id = OLD.carrera_id;
 END$$
 
 CREATE TRIGGER `restringir_eliminar_padre_carrera` AFTER DELETE ON `Carrera` 
 FOR EACH ROW BEGIN
-    IF(SELECT COUNT(*) FROM Alumno WHERE Alumno.carrera_id = OLD.carrera_id) <> 0 THEN
-        SIGNAL SQLSTATE '23000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'No se puede eliminar el registro. La llave foránea existe en la tabla Alumno.';
-    END IF;
-
     IF(SELECT COUNT(*) FROM Plan_Estudio WHERE Plan_Estudio.carrera_id = OLD.carrera_id) <> 0 THEN
         SIGNAL SQLSTATE '23000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'No se puede eliminar el registro. La llave foránea existe en la tabla Plan_Estudio.';
     END IF;
@@ -403,8 +398,8 @@ END$$
 
 CREATE TRIGGER `prevenir_insertar_hijo_alumno` BEFORE INSERT ON `Alumno`
 FOR EACH ROW BEGIN
-    IF(SELECT COUNT(*) FROM Carrera WHERE Carrera.carrera_id = NEW.carrera_id) = 0 THEN
-        SIGNAL SQLSTATE '23000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'No se puede agregar el registro. La llave foránea no existe en la tabla Carrera.';
+    IF(SELECT COUNT(*) FROM Plan_Estudio WHERE Plan_Estudio.plan_id = NEW.plan_id) = 0 THEN
+        SIGNAL SQLSTATE '23000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'No se puede agregar el registro. La llave foránea no existe en la tabla Plan_Estudio.';
     END IF;
 
     IF((SELECT COUNT(*) FROM Alumno WHERE Alumno.alumno_id = NEW.alumno_id) <> 0) THEN
@@ -416,8 +411,8 @@ END$$
 
 CREATE TRIGGER `prevenir_actualizar_hijo_alumno` BEFORE UPDATE ON `Alumno`
 FOR EACH ROW BEGIN
-    IF(SELECT COUNT(*) FROM Carrera WHERE Carrera.carrera_id = NEW.carrera_id) = 0 THEN
-        SIGNAL SQLSTATE '23000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'No se puede actualizar el registro. La llave foránea no existe en la tabla Carrera.';
+    IF(SELECT COUNT(*) FROM Plan_Estudio WHERE Plan_Estudio.plan_id = NEW.plan_id) = 0 THEN
+        SIGNAL SQLSTATE '23000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'No se puede agregar el registro. La llave foránea no existe en la tabla Plan_Estudio.';
     END IF;
 
     IF(OLD.alumno_id <> NEW.alumno_id AND (SELECT COUNT(*) FROM Alumno WHERE Alumno.alumno_id = NEW.alumno_id) <> 0) THEN
@@ -561,11 +556,13 @@ END$$
 
 CREATE TRIGGER `cascada_actualizar_padre_plan_estudio` AFTER UPDATE ON `Plan_Estudio` 
 FOR EACH ROW BEGIN
+    UPDATE Alumno SET Alumno.plan_id = NEW.plan_id WHERE Alumno.plan_id = OLD.plan_id;
     UPDATE Materia_Plan SET Materia_Plan.plan_id = NEW.plan_id WHERE Materia_Plan.plan_id = OLD.plan_id;
 END$$
 
 CREATE TRIGGER `cascada_eliminar_padre_plan_estudio` AFTER DELETE ON `Plan_Estudio` 
 FOR EACH ROW BEGIN
+    DELETE FROM Alumno WHERE Alumno.plan_id = OLD.plan_id;
     DELETE FROM Materia_Plan WHERE Materia_Plan.plan_id = OLD.plan_id;
 END$$
 

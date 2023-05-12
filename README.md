@@ -6,7 +6,7 @@ Clúster de MySQL estructurado con un nodo de administración, dos de datos y ot
 ## Ejecución del entorno
 >_**1.** Abrir una terminal en el directorio del proyecto y ejecutar Docker Compose:_
 >```
->$ docker-compose up
+>$ docker-compose up -d
 >```
 >
 >_**2.** Verificar que los cuatro contenedores generados se encuentren corriendo:_
