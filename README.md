@@ -48,3 +48,15 @@ Clúster de MySQL estructurado con un nodo de administración, dos de datos y ot
 >mysql> SELECT * FROM Carrera;
 >mysql> SELECT * FROM Departamento;
 >```
+
+## Detención del entorno
+>_**1.** Ejecutar el siguiente comando dentro del directorio del proyecto:_
+>```
+>$ docker-compose down
+>```
+>
+>_**2.** Verificar si los cuatro contenedores ya no existen:_
+>```
+>$ docker ps
+>$ docker ps -a
+>```
