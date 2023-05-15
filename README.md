@@ -47,6 +47,7 @@ Clúster de MySQL estructurado con un nodo de administración, dos de datos y ot
 >mysql> SELECT * FROM Centro;
 >mysql> SELECT * FROM Carrera;
 >mysql> SELECT * FROM Departamento;
+>mysql> SELECT * FROM Materia;
 >```
 
 ## Detención del entorno
