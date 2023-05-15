@@ -42,7 +42,7 @@ Clúster de MySQL estructurado con un nodo de administración, dos de datos y ot
 >11 rows in set (0.01 sec)
 >```
 >
->_**2.** Revisar si las tablas Centro, Carrera y Departamento tienen registros:_
+>_**2.** Revisar si las tablas Centro, Carrera, Departamento y Materia tienen registros:_
 >```
 >mysql> SELECT * FROM Centro;
 >mysql> SELECT * FROM Carrera;
