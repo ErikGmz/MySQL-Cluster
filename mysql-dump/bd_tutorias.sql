@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `bd_tutorias`.`Alumno` (
   `alumno_imagen` MEDIUMBLOB NOT NULL,
   PRIMARY KEY `PK_alumno` (`alumno_id`, `alumno_semestre`, `alumno_grupo_numero`),  
   CONSTRAINT `CK_alumno_semestre` CHECK (`alumno_semestre` BETWEEN 1 AND 10),
-  CONSTRAINT `CK_alumno_grupo_numero` CHECK (`alumno_grupo_numero` BETWEEN 1 AND 3)
+  CONSTRAINT `CK_alumno_grupo_numero` CHECK (`alumno_grupo_numero` BETWEEN 0 AND 2)
 )
 PARTITION BY RANGE(`alumno_semestre`) 
 SUBPARTITION BY HASH(`alumno_grupo_numero`) (
@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `bd_tutorias`.`Tutor` (
     `tutor_vigente` TINYINT NOT NULL,
     PRIMARY KEY `PK_tutor` (`tutor_id`, `tutor_programa_numero`, `tutor_promedio`),
     CONSTRAINT `CK_tutor_promedio` CHECK (`tutor_promedio` BETWEEN 8 AND 10),
-    CONSTRAINT `CK_tutor_programa_numero` CHECK (`tutor_programa_numero` BETWEEN 1 AND 2),
+    CONSTRAINT `CK_tutor_programa_numero` CHECK (`tutor_programa_numero` BETWEEN 0 AND 1),
     CONSTRAINT `CK_tutor_calificacion` CHECK (`tutor_calificacion` BETWEEN 0 AND 5),
     CONSTRAINT `CK_tutor_vigente` CHECK (`tutor_vigente` BETWEEN 0 AND 1)
 )
@@ -224,6 +224,7 @@ CREATE TABLE IF NOT EXISTS `bd_tutorias`.`Solicitud` (
   `solicitud_vigente` TINYINT NOT NULL,
   `asesoria_evidencia` MEDIUMBLOB NULL,
   `asesoria_calificacion` FLOAT NULL,
+  `solicitud_rechazados` VARCHAR(255) NULL,
   PRIMARY KEY `PK_solicitud` (`solicitud_id`, `solicitud_urgencia`, `solicitud_vigente`),
   CONSTRAINT `CK_solicitud_urgencia` CHECK (`solicitud_urgencia` IN('U', 'E')),
   CONSTRAINT `CK_restriccion_fechas_solicitud` CHECK (`solicitud_fecha` <= `solicitud_fecha_programacion`),
@@ -835,6 +836,461 @@ en nivel básico y medio superior; con la finalidad de formar actores críticos
 que puedan desempeñarse sólidamente en la interpretación, desarrollen
 propuestas que contribuyan a la renovación de la escena con compromiso
 social, ético y humanista', 1);
+
+
+#----------------------------------------------------------------
+
+
+DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_plan_estudio`;
+
+INSERT INTO Plan_Estudio VALUES 
+(1,41,'2016-01-01','2023-12-31'),
+(101,92,'2017-01-01','2023-12-31'),
+(201,33,'2015-01-01','2023-12-31'),
+(301,60,'2019-01-01','2023-12-31'),
+(401,66,'2017-01-01','2023-12-31'),
+(501,67,'2019-01-01','2023-12-31'),
+(601,61,'2016-01-01','2023-12-31'),
+(701,69,'2019-01-01','2023-12-31'),
+(801,35,'2019-01-01','2023-12-31'),
+(901,81,'2017-01-01','2023-12-31'),
+(1001,88,'2021-01-01','2023-12-31'),
+(1101,62,'2015-01-01','2023-12-31'),
+(1201,64,'2017-01-01','2023-12-31'),
+(5801,94,'2020-01-01','2023-12-31'),
+(5901,12,'2020-01-01','2023-12-31'),
+(6001,78,'2016-01-01','2023-12-31'),
+(6101,10,'2016-01-01','2023-12-31'),
+(6201,79,'2017-01-01','2023-12-31');
+
+
+
+#----------------------------------------------------------------
+
+
+DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_materia_plan`;
+
+INSERT INTO Materia_Plan VALUES
+(1,1,1),
+(2,1,1),
+(3,1,1),
+(4,1,1),
+(5,1,1),
+(6,1,1),
+(7,1,2),
+(8,1,2),
+(9,1,2),
+(10,1,2),
+(11,1,2),
+(12,1,2),
+(13,1,3),
+(14,1,3),
+(15,1,3),
+(16,1,3),
+(17,1,3),
+(18,1,3),
+(19,1,4),
+(20,1,4),
+(21,1,4),
+(22,1,4),
+(23,1,4),
+(25,1,5),
+(26,1,5),
+(27,1,5),
+(28,1,5),
+(29,1,5),
+(31,1,6),
+(32,1,6),
+(33,1,6),
+(34,1,6),
+(37,1,7),
+(38,1,7),
+(39,1,7),
+(40,1,7),
+(43,1,8),
+
+(1001,101,1),
+(1002,101,1),
+(1003,101,1),
+(1004,101,1),
+(1005,101,1),
+(1006,101,2),
+(1007,101,2),
+(1008,101,2),
+(1009,101,2),
+(1010,101,2),
+(1011,101,3),
+(1012,101,3),
+(1013,101,3),
+(1014,101,3),
+(1015,101,3),
+(1016,101,3),
+(1017,101,4),
+(1018,101,4),
+(1019,101,4),
+(1020,101,4),
+(1021,101,4),
+(1023,101,5),
+(1024,101,5),
+(1025,101,5),
+(1026,101,5),
+(1027,101,5),
+(1030,101,6),
+(1031,101,6),
+(1032,101,6),
+(1033,101,6),
+(1034,101,6),
+(1037,101,7),
+(1038,101,7),
+(1039,101,7),
+(1040,101,7),
+(1041,101,7),
+(1043,101,8),
+
+(2001,201,1),
+(2002,201,1),
+(2003,201,1),
+(2004,201,1),
+(2005,201,1),
+(2006,201,2),
+(2007,201,2),
+(2008,201,2),
+(2009,201,2),
+(2010,201,2),
+(2011,201,3),
+(2012,201,3),
+(2013,201,3),
+(2014,201,3),
+(2015,201,3),
+(2016,201,4),
+(2017,201,4),
+(2018,201,4),
+(2019,201,4),
+(2020,201,4),
+(2021,201,5),
+(2022,201,5),
+(2023,201,5),
+(2024,201,5),
+(2025,201,5),
+(2027,201,6),
+(2028,201,6),
+(2029,201,6),
+(2030,201,6),
+(2031,201,6),
+(2033,201,7),
+(2034,201,7),
+(2035,201,7),
+(2036,201,7),
+(2037,201,7),
+(2039,201,8),
+(2040,201,8),
+(2041,201,8),
+(2042,201,8),
+(2043,201,8),
+(2044,201,9),
+(2045,201,9),
+(2046,201,9),
+(2047,201,9),
+(2048,201,9),
+(2049,201,10),
+(2050,201,10),
+(3001,301,1),
+(3002,301,1),
+(3003,301,1),
+(3004,301,1),
+(3005,301,2),
+(3006,301,2),
+(3007,301,2),
+(3008,301,2),
+(3009,301,2),
+(3010,301,3),
+(3011,301,3),
+(3012,301,3),
+(3013,301,3),
+(3014,301,3),
+(3015,301,4),
+(3016,301,4),
+(3017,301,4),
+(3018,301,4),
+(3019,301,4),
+(3020,301,4),
+(3021,301,5),
+(3022,301,5),
+(3023,301,5),
+(3024,301,5),
+(3025,301,5),
+(3027,301,6),
+(3028,301,6),
+(3029,301,6),
+(3030,301,6),
+(3031,301,6),
+(3032,301,7),
+(3033,301,7),
+(3034,301,7),
+(3035,301,7),
+(3036,301,7),
+(3037,301,7),
+(3038,301,8),
+(3039,301,8),
+(3040,301,8),
+(3041,301,8),
+(3042,301,8),
+(3045,301,9),
+(3046,301,9),
+(3047,301,9),
+(4001,401,1),
+(4002,401,1),
+(4003,401,1),
+(4004,401,1),
+(4005,401,1),
+(4006,401,2),
+(4007,401,2),
+(4008,401,2),
+(4009,401,2),
+(4010,401,2),
+(4011,401,2),
+(4012,401,3),
+(4013,401,3),
+(4014,401,3),
+(4015,401,3),
+(4016,401,3),
+(4017,401,3),
+(4018,401,4),
+(4019,401,4),
+(4020,401,4),
+(4021,401,4),
+(4022,401,4),
+(4023,401,4),
+(4024,401,5),
+(4025,401,5),
+(4026,401,5),
+(4027,401,5),
+(4028,401,5),
+(4029,401,5),
+(4030,401,5),
+(4031,401,6),
+(4032,401,6),
+(4033,401,6),
+(4034,401,6),
+(4035,401,6),
+(4036,401,6),
+(4037,401,7),
+(4038,401,7),
+(4039,401,7),
+(4040,401,7),
+(4041,401,7),
+(4042,401,7),
+(4043,401,7),
+(4044,401,8),
+(4045,401,8),
+(4046,401,8),
+(4047,401,8),
+(4048,401,8),
+(4049,401,8),
+(4050,401,8),
+(4051,401,9),
+(4052,401,9),
+(4053,401,9),
+(4054,401,9),
+(4055,401,9),
+(4056,401,9),
+(4057,401,10),
+(5001,501,1),
+(5002,501,1),
+(5003,501,1),
+(5004,501,1),
+(5005,501,1),
+(5006,501,2),
+(5007,501,2),
+(5008,501,2),
+(5009,501,2),
+(5010,501,2),
+(5011,501,3),
+(5012,501,3),
+(5013,501,3),
+(5014,501,3),
+(5015,501,3),
+(5016,501,3),
+(5017,501,4),
+(5018,501,4),
+(5019,501,4),
+(5020,501,4),
+(5021,501,4),
+(5022,501,4),
+(5023,501,5),
+(5024,501,5),
+(5025,501,5),
+(5026,501,5),
+(5027,501,5),
+(5028,501,5),
+(5029,501,6),
+(5030,501,6),
+(5031,501,6),
+(5032,501,6),
+(5033,501,6),
+(5034,501,6),
+(5035,501,7),
+(5036,501,7),
+(5037,501,7),
+(5038,501,7),
+(5039,501,7),
+(5040,501,7),
+(5041,501,8),
+(5042,501,8),
+(5043,501,8),
+(5044,501,8),
+(5045,501,8),
+(5046,501,8),
+(5047,501,9),
+(5048,501,9),
+(5049,501,9),
+(6001,601,1),
+(6002,601,1),
+(6003,601,1),
+(6004,601,1),
+(6005,601,1),
+(6006,601,1),
+(6007,601,2),
+(6008,601,2),
+(6009,601,2),
+(6010,601,2),
+(6011,601,2),
+(6012,601,2),
+(6013,601,3),
+(6014,601,3),
+(6015,601,3),
+(6016,601,3),
+(6017,601,3),
+(6018,601,3),
+(6019,601,4),
+(6020,601,4),
+(6021,601,4),
+(6022,601,4),
+(6023,601,4),
+(6024,601,5),
+(6025,601,5),
+(6026,601,5),
+(6027,601,5),
+(6028,601,5),
+(6029,601,5),
+(6030,601,6),
+(6031,601,6),
+(6032,601,6),
+(6033,601,6),
+(6034,601,6),
+(6035,601,7),
+(6036,601,7),
+(6037,601,7),
+(6038,601,7),
+(6039,601,7),
+(6040,601,8),
+(6041,601,8),
+(6042,601,8),
+(6043,601,8),
+(6044,601,8),
+(6046,601,9),
+(6047,601,9),
+(6048,601,9),
+(6049,601,9),
+(6050,601,9);
+
+
+#----------------------------------------------------------------
+
+
+DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_alumno`;
+
+INSERT INTO Alumno VALUES
+(221001,'Laura Luciana','Montoya Aguilar',301,3,'A',0,'4491236754','al221001@edu.uaa.mx','al221001',''),
+(221002,'Juan','Leal Hernandez',301,5,'B',1,'4493696578','al221002@edu.uaa.mx','al221002',''),
+(221003,'Martha','Palos Fiscal',301,5,'B',1,'4491234432','al221003@edu.uaa.mx','al221003',''),
+(227801,'Gustavo','Vicencio Marea',401,3,'A',0,'4498021445','al227801@edu.uaa.mx','al227801',''),
+(227902,'Adrian','Cardenas Rios',401,5,'B',1,'4495631010','al227902@edu.uaa.mx','al227902',''),
+(228003,'Julia María','Cantu Figueroa',401,7,'B',1,'4493217485','al228003@edu.uaa.mx','al228003',''),
+(229089,'Fernando','Najera Olguin',601,4,'A',0,'4492574896','al229089@edu.uaa.mx','al229089',''),
+(224178,'Mario','Basurto',601,5,'A',0,'4498963356','al224178@edu.uaa.mx','al224178',''),
+(226582,'Cynthia Maritza','Teran Carranza',601,9,'A',0,'4491808868','al226582@edu.uaa.mx','al226582',''),
+(211694,'Israel Alejandro','Mora Gonzalez',601,8,'A',0,'4492848828','al211694@edu.uaa.mx','al211694',''),
+(269314,'Eduardo','Davila Campos',601,8,'B',1,'4499205022','al269314@edu.uaa.mx','al269314',''),
+(269686,'Erik Alejandro','Gomez Martinez',601,8,'B',1,'4491965071','al269686@edu.uaa.mx','269686','');
+
+
+#----------------------------------------------------------------
+
+
+DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_tutor`;
+
+INSERT INTO Tutor VALUES 
+(2,226582,9.64,'2023-01-01',NULL,'S',0,NULL,1),
+(3,269686,10,'2023-03-15',NULL,'V',1,NULL,1),
+
+(4,221001,9.1,'2023-02-08',NULL,'S',0,NULL,1),
+(5,227902,8.6,'2023-04-10',NULL,'V',1,NULL,1);
+
+
+#----------------------------------------------------------------
+
+
+DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_materia_tutor`;
+
+INSERT INTO Materia_Tutor VALUES
+(2,6001,9.7),
+(2,6002,9.2),
+(2,6004,9.1),
+(2,6012,8.7),
+(2,6013,9.0),
+(2,6014,10),
+(2,6015,9.7),
+(2,6016,9.2),
+(2,6019,9.1),
+(2,6020,8.7),
+(2,6021,9.0),
+(2,6022,10),
+(2,6036,9.7),
+(2,6037,9.2),
+(2,6038,9.1),
+
+(3,6001,10),
+(3,6002,10),
+(3,6003,10),
+(3,6004,10),
+(3,6005,10),
+(3,6006,10),
+(3,6007,10),
+(3,6008,10),
+(3,6009,10),
+(3,6010,10),
+(3,6021,10),
+(3,6022,10),
+(3,6036,10),
+(3,6037,10),
+(3,6038,10),
+
+(4,3001,9.3),
+(4,3002,9.1),
+(4,3003,9.0),
+(4,3004,8.8),
+(4,3005,8.5),
+(4,3006,10),
+(4,3007,9.0),
+(4,3008,9.0),
+(4,3009,9.1),
+
+(5,4001,8.2),
+(5,4002,8.8),
+(5,4003,10),
+(5,4004,8.9),
+(5,4005,9.0),
+(5,4006,9.6),
+(5,4007,9.5),
+(5,4008,8.7),
+(5,4009,10),
+(5,4010,10),
+(5,4011,8.5),
+(5,4012,9.1),
+(5,4013,10),
+(5,4014,10),
+(5,4015,10);
 
 
 #----------------------------------------------------------------
@@ -2222,7 +2678,6 @@ FOR EACH ROW BEGIN
     DELETE FROM Alumno_Solicitud WHERE Alumno_Solicitud.alumno_id = OLD.alumno_id;
 END$$
 
-DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_alumno`$$
 CREATE DEFINER=`root`@`localhost` TRIGGER `prevenir_insertar_hijo_alumno` BEFORE INSERT ON `Alumno`
 FOR EACH ROW BEGIN
     IF(SELECT COUNT(*) FROM Plan_Estudio WHERE Plan_Estudio.plan_id = NEW.plan_id) = 0 THEN
@@ -2233,7 +2688,7 @@ FOR EACH ROW BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'No se puede agregar el registro. El identificador principal (alumno_id) ya existe en la tabla Alumno.';
     END IF;
 
-    SET NEW.alumno_grupo_numero = ORD(NEW.alumno_grupo) - 64;
+    SET NEW.alumno_grupo_numero = ORD(NEW.alumno_grupo) - 65;
 END$$
 
 DROP TRIGGER IF EXISTS `prevenir_actualizar_hijo_alumno`$$
@@ -2247,7 +2702,7 @@ FOR EACH ROW BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = 30001, MESSAGE_TEXT = 'No se puede actualizar el registro. El identificador principal (alumno_id) ya existe en la tabla Alumno.';
     END IF;
 
-    SET NEW.alumno_grupo_numero = ORD(NEW.alumno_grupo) - 64;
+    SET NEW.alumno_grupo_numero = ORD(NEW.alumno_grupo) - 65;
 END$$
 
 
@@ -2268,7 +2723,6 @@ FOR EACH ROW BEGIN
     DELETE FROM Solicitud WHERE Solicitud.tutor_id = OLD.tutor_id;
 END$$
 
-DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_tutor`$$
 CREATE DEFINER=`root`@`localhost` TRIGGER `prevenir_insertar_hijo_tutor` BEFORE INSERT ON `Tutor`
 FOR EACH ROW BEGIN
     IF(SELECT COUNT(*) FROM Alumno WHERE Alumno.alumno_id = NEW.alumno_id) = 0 THEN
@@ -2280,9 +2734,9 @@ FOR EACH ROW BEGIN
     END IF;
 
     IF NEW.tutor_programa = "S" THEN
-        SET NEW.tutor_programa_numero = 1;
+        SET NEW.tutor_programa_numero = 0;
     ELSE
-        SET NEW.tutor_programa_numero = 2;
+        SET NEW.tutor_programa_numero = 1;
     END IF;
 END$$
 
@@ -2298,9 +2752,9 @@ FOR EACH ROW BEGIN
     END IF;
 
     IF NEW.tutor_programa = "S" THEN
-        SET NEW.tutor_programa_numero = 1;
+        SET NEW.tutor_programa_numero = 0;
     ELSE
-        SET NEW.tutor_programa_numero = 2;
+        SET NEW.tutor_programa_numero = 1;
     END IF;
 END$$
 
@@ -2406,7 +2860,6 @@ FOR EACH ROW BEGIN
     DELETE FROM Materia_Plan WHERE Materia_Plan.plan_id = OLD.plan_id;
 END$$
 
-DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_plan_estudio`$$
 CREATE DEFINER=`root`@`localhost` TRIGGER `prevenir_insertar_hijo_plan_estudio` BEFORE INSERT ON `Plan_Estudio`
 FOR EACH ROW BEGIN
     IF(SELECT COUNT(*) FROM Carrera WHERE Carrera.carrera_id = NEW.carrera_id) = 0 THEN
@@ -2434,7 +2887,6 @@ END$$
 #----------------------------------------------------------------
 
 
-DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_materia_plan`$$
 CREATE DEFINER=`root`@`localhost` TRIGGER `prevenir_insertar_hijo_materia_plan` BEFORE INSERT ON `Materia_Plan`
 FOR EACH ROW BEGIN
     IF(SELECT COUNT(*) FROM Materia WHERE Materia.materia_id = NEW.materia_id) = 0 THEN
@@ -2470,7 +2922,6 @@ END$$
 #----------------------------------------------------------------
 
 
-DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_materia_tutor`$$
 CREATE DEFINER=`root`@`localhost` TRIGGER `prevenir_insertar_hijo_materia_tutor` BEFORE INSERT ON `Materia_Tutor`
 FOR EACH ROW BEGIN
     IF(SELECT COUNT(*) FROM Tutor WHERE Tutor.tutor_id = NEW.tutor_id) = 0 THEN
