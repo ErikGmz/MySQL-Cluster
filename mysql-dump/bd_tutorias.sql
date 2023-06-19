@@ -1202,30 +1202,38 @@ DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_alumno`;
 
 INSERT INTO Alumno VALUES
 (221001,'Laura Luciana','Montoya Aguilar',301,3,'A',0,'4491236754','al221001@edu.uaa.mx','al221001',''),
-(221002,'Juan','Leal Hernandez',301,5,'B',1,'4493696578','al221002@edu.uaa.mx','al221002',''),
+(221002,'Juan Carlos','Leal Hernández',301,3,'B',1,'4493696578','al221002@edu.uaa.mx','al221002',''),
 (221003,'Martha','Palos Fiscal',301,5,'B',1,'4491234432','al221003@edu.uaa.mx','al221003',''),
-(227801,'Gustavo','Vicencio Marea',401,3,'A',0,'4498021445','al227801@edu.uaa.mx','al227801',''),
-(227902,'Adrian','Cardenas Rios',401,5,'B',1,'4495631010','al227902@edu.uaa.mx','al227902',''),
-(228003,'Julia María','Cantu Figueroa',401,7,'B',1,'4493217485','al228003@edu.uaa.mx','al228003',''),
-(229089,'Fernando','Najera Olguin',601,4,'A',0,'4492574896','al229089@edu.uaa.mx','al229089',''),
-(224178,'Mario','Basurto',601,5,'A',0,'4498963356','al224178@edu.uaa.mx','al224178',''),
+(221004,'Gustavo','Vicencio Marea',401,3,'A',0,'4498021445','al221004@edu.uaa.mx','al221004',''),
+(221005,'Adrián','Cardenas Rios',401,5,'B',1,'4495631010','al221005@edu.uaa.mx','al221005',''),
+(221006,'Julia María','Cantú Figueroa',401,7,'B',1,'4493217485','al221006@edu.uaa.mx','al221006',''),
+(221007,'Fernando','Najera Olguin',501,4,'A',0,'4492574896','al221007@edu.uaa.mx','al221007',''),
+(221008,'Mario','Basurto',501,4,'A',0,'4498963356','al221008@edu.uaa.mx','al221008',''),
+(221009,'Sofia','García Vargas',501,4,'A',0,'8675392415','al221009@edu.uaa.mx','al221009',''),
+(221010,'Alejandro','Rodríguez Ríos',501,5,'B',1,'4098576213','al221010@edu.uaa.mx','al221010',''),
+(221011,'Isabella','Torres González',501,5,'B',1,'5261938470','al221011@edu.uaa.mx','al221011',''),
+(221012,'Diego','Martínez Delgado',601,1,'A',0,'9385716204','al221012@edu.uaa.mx','al221012',''),
+(221013,'Valentina','Morales Ramírez',601,1,'B',1,'7123954680','al221013@edu.uaa.mx','al221013',''),
+(221014,'Juan','Sánchez Méndez',601,2,'B',1,'3540682197','al221014@edu.uaa.mx','al221014',''),
+(221015,'Camila','Flores Castro',601,2,'A',0,'6918240573','al221015@edu.uaa.mx','al221015',''),
+(221016,'Samuel','Pérez Fernández',601,3,'A',0,'2408957361','al221016@edu.uaa.mx','al221016',''),
 (226582,'Cynthia Maritza','Teran Carranza',601,9,'A',0,'4491808868','al226582@edu.uaa.mx','al226582',''),
-(211694,'Israel Alejandro','Mora Gonzalez',601,8,'A',0,'4492848828','al211694@edu.uaa.mx','al211694',''),
+(211694,'Israel Alejandro','Mora Gonzalez',601,9,'A',0,'4492848828','al211694@edu.uaa.mx','al211694',''),
 (269314,'Eduardo','Davila Campos',601,8,'B',1,'4499205022','al269314@edu.uaa.mx','al269314',''),
-(269686,'Erik Alejandro','Gomez Martinez',601,8,'B',1,'4491965071','al269686@edu.uaa.mx','269686','');
-
+(269686,'Erik Alejandro','Gomez Martinez',601,8,'B',1,'4491965071','al269686@edu.uaa.mx','al269686','');
 
 #----------------------------------------------------------------
 
 
 DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_tutor`;
 
-INSERT INTO Tutor VALUES 
-(2,226582,9.64,'2023-01-01',NULL,'S',0,NULL,1),
-(3,269686,10,'2023-03-15',NULL,'V',1,NULL,1),
-
-(4,221001,9.1,'2023-02-08',NULL,'S',0,NULL,1),
-(5,227902,8.6,'2023-04-10',NULL,'V',1,NULL,1);
+INSERT INTO Tutor VALUES
+(1,221003,9,'2022-12-15 10:00:00',NULL,'S',0,NULL,1),
+(2,221006,9,'2022-09-10 12:15:00',NULL,'V',1,NULL,1),
+(3,221010,9,'2022-09-10 12:15:00',NULL,'V',1,NULL,1),
+(4,221011,8,'2022-09-10 12:15:00',NULL,'S',0,NULL,1),
+(5,226582,9,'2023-03-22 18:20:00',NULL,'S',0,NULL,1),
+(6,211694,9,'2022-05-03 10:00:00',NULL,'V',1,NULL,1);
 
 
 #----------------------------------------------------------------
@@ -1234,63 +1242,114 @@ INSERT INTO Tutor VALUES
 DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_materia_tutor`;
 
 INSERT INTO Materia_Tutor VALUES
-(2,6001,9.7),
-(2,6002,9.2),
-(2,6004,9.1),
-(2,6012,8.7),
-(2,6013,9.0),
-(2,6014,10),
-(2,6015,9.7),
-(2,6016,9.2),
-(2,6019,9.1),
-(2,6020,8.7),
-(2,6021,9.0),
-(2,6022,10),
-(2,6036,9.7),
-(2,6037,9.2),
-(2,6038,9.1),
+(1,3001,10),
+(1,3002,9),
+(1,3003,8),
+(1,3004,10),
+(1,3005,9),
+(1,3006,9),
+(1,3007,9),
+(1,3008,10),
+(1,3009,8),
+(1,3010,9),
+(1,3011,10),
+(1,3012,9),
+(1,3013,10),
+(1,3014,8),
+(1,3015,10),
+(1,3016,8),
+(1,3017,10),
+(1,3018,10),
+(1,3019,10),
+(1,3020,10),
+(2,4012,10),
+(2,4013,10),
+(2,4014,8),
+(2,4015,10),
+(2,4016,10),
+(2,4017,9),
+(2,4025,9),
+(2,4026,10),
+(2,4027,8),
+(2,4028,10),
+(2,4029,10),
+(2,4030,10),
+(2,4031,10),
+(3,5017,10),
+(3,5018,10),
+(3,5019,8),
+(3,5020,10),
+(3,5021,10),
+(3,5022,9),
+(4,5018,10),
+(4,5019,8),
+(4,5020,10),
+(4,5021,10),
+(4,5022,9),
+(5,6001,10),
+(5,6002,9),
+(5,6003,8),
+(5,6004,10),
+(5,6005,9),
+(5,6006,9),
+(5,6007,9),
+(5,6008,10),
+(5,6009,8),
+(5,6010,9),
+(5,6011,10),
+(5,6012,9),
+(5,6013,10),
+(5,6040,8),
+(5,6041,10),
+(5,6042,8),
+(5,6043,10),
+(5,6044,10),
+(6,6001,10),
+(6,6002,9),
+(6,6003,8),
+(6,6004,10),
+(6,6005,9),
+(6,6006,9),
+(6,6007,9),
+(6,6030,10),
+(6,6031,8),
+(6,6033,9),
+(6,6034,10),
+(6,6012,9),
+(6,6013,10),
+(6,6040,8),
+(6,6041,10),
+(6,6042,8),
+(6,6043,10),
+(6,6044,10);
 
-(3,6001,10),
-(3,6002,10),
-(3,6003,10),
-(3,6004,10),
-(3,6005,10),
-(3,6006,10),
-(3,6007,10),
-(3,6008,10),
-(3,6009,10),
-(3,6010,10),
-(3,6021,10),
-(3,6022,10),
-(3,6036,10),
-(3,6037,10),
-(3,6038,10),
 
-(4,3001,9.3),
-(4,3002,9.1),
-(4,3003,9.0),
-(4,3004,8.8),
-(4,3005,8.5),
-(4,3006,10),
-(4,3007,9.0),
-(4,3008,9.0),
-(4,3009,9.1),
+#----------------------------------------------------------------
 
-(5,4001,8.2),
-(5,4002,8.8),
-(5,4003,10),
-(5,4004,8.9),
-(5,4005,9.0),
-(5,4006,9.6),
-(5,4007,9.5),
-(5,4008,8.7),
-(5,4009,10),
-(5,4010,10),
-(5,4011,8.5),
-(5,4012,9.1),
-(5,4013,10),
-(5,4014,10),
-(5,4015,10);
+
+DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_solicitud`;
+
+INSERT INTO Solicitud VALUES
+(1,NULL,'2023-06-15 13:14:00','U',3010,'Límites y rangos','No entiendo como obtener los límites, rango y dominio de una función',NULL,NULL,'P',1, NULL, NULL, NULL),
+(2,1,'2023-06-15 12:14:00','U',3011,'Repaso para 2do parcial.','Me gustaría ver un poco acerca del temario para descansar','2023-06-19','UAA, edificio 5-E','L',1, NULL, NULL, NULL),
+(3,NULL,'2023-06-05 13:14:00','U',6001,'Balance General','Se me dificulta entender acerca de los activos y pasivos.',NULL,NULL,'P',1, NULL, NULL, NULL),
+(4,6,'2023-06-01 09:14:00','E',6002,'Repaso para 1er Parcial','Me gustaría ver un poco acerca del temario para repasar para el próximo examen.','2023-06-24','Biblioteca Central','L',1, NULL, NULL, NULL),
+(5,NULL,'2023-06-15 18:00:00','E',6003,'Límtes','Demostración  de porque es necesrio utilizar los límites para obtener el resultado deseado.',NULL,NULL,'P',1, NULL, NULL, NULL),
+(6,5,'2023-06-15 12:14:00','U',6004,'Tabla periódica','Quisera conocer acerca de los distintos compuestos que se generam día con día.','2023-06-19','UAA, edificio 120','P',0, 'FA', 0, NULL);
+
+
+#----------------------------------------------------------------
+
+
+DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_alumno_solicitud`;
+
+INSERT INTO Alumno_Solicitud VALUES
+(221001,1,1,0),
+(221002,2,1,0),
+(221012,3,1,0),
+(221013,4,1,0),
+(221012,5,1,0),
+(221013,6,1,0);
 
 
 #----------------------------------------------------------------
@@ -2969,7 +3028,6 @@ FOR EACH ROW BEGIN
     DELETE FROM Alumno_Solicitud WHERE Alumno_Solicitud.Solicitud_id = OLD.solicitud_id;
 END$$
 
-DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_solicitud`$$
 CREATE DEFINER=`root`@`localhost` TRIGGER `prevenir_insertar_hijo_solicitud` BEFORE INSERT ON `Solicitud`
 FOR EACH ROW BEGIN
     IF(NEW.tutor_id IS NOT NULL) THEN
@@ -3009,7 +3067,6 @@ END$$
 #----------------------------------------------------------------
 
 
-DROP TRIGGER IF EXISTS `prevenir_insertar_hijo_alumno_solicitud`$$
 CREATE DEFINER=`root`@`localhost` TRIGGER `prevenir_insertar_hijo_alumno_solicitud` BEFORE INSERT ON `Alumno_Solicitud`
 FOR EACH ROW BEGIN
     IF(SELECT COUNT(*) FROM Alumno WHERE Alumno.alumno_id = NEW.alumno_id) = 0 THEN
